@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestion des tâches</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="text-center">Gestion des tâches</h1>
+
+    <!-- Formulaire (ajout ou modification) -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <form th:action="@{${task.id == null ? '/add' : '/update'}}" th:object="${task}" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Titre :</label>
+                    <input type="text" id="title" name="title" th:field="*{title}" class="form-control" placeholder="Titre de la tâche">
+                </div>
+                <button type="submit" class="btn btn-primary" th:text="${task.id == null ? 'Ajouter' : 'Modifier'}"></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste des tâches -->
+    <div class="mt-4">
+        <h2>Liste des tâches</h2>
+        <ul class="list-group">
+            <li th:each="task : ${tasks}" class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span th:text="${task.title}" th:classappend="${task.completed} ? 'text-decoration-line-through' : ''"></span>
+                    <span th:if="${task.completed}" class="badge bg-success ms-2">Terminée</span>
+                </div>
+                <div>
+                    <a th:href="@{'/complete/' + ${task.id}}" class="btn btn-success btn-sm">Terminer</a>
+                    <a th:href="@{'/edit/' + ${task.id}}" class="btn btn-warning btn-sm">Modifier</a>
+                    <a th:href="@{'/delete/' + ${task.id}}" class="btn btn-danger btn-sm">Supprimer</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
